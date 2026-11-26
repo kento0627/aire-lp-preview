@@ -1,6 +1,6 @@
 /* An alternate color direction; shared mock controls and source editions stay intact. */
-.blue-edition{--blue-ink:#112749;--blue-primary:#245be8;--blue-paper:#edf3ff;background:var(--blue-paper);color:#12213a}
-.blue-edition .site-header{max-width:none;background:#e2ecff}
+.blue-edition{--blue-ink:#112749;--blue-primary:#245be8;--blue-paper:#fff;background:var(--blue-paper);color:#171c19}
+.blue-edition .site-header{max-width:none;background:#fff}
 .blue-hero-band{position:relative;isolation:isolate;background:radial-gradient(ellipse at 95% 28%,#7da5ff 0,transparent 47%),radial-gradient(ellipse at 0 62%,#b6d9ff 0,transparent 55%),linear-gradient(155deg,#e2ecff 4%,#bed3ff 48%,#729afa 100%)}
 .blue-hero-band::before,.blue-edition .field::before,.blue-edition .contact::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url(studio-grain.svg) repeat;background-size:160px 160px;mix-blend-mode:soft-light;opacity:.45}
 .blue-edition .hero{padding-bottom:70px}
@@ -55,12 +55,21 @@
 /* Keep the lightest blue away from small white text. */
 .blue-edition .field{background:radial-gradient(ellipse at 100% 12%,#315bd0 0,transparent 52%),linear-gradient(125deg,#143ec5 0%,#2054c8 72%,#2857cc 100%)}
 .blue-edition .about-statement>p,.blue-edition .re-words,.blue-edition .team article p{color:#344d75}
-/* Real halftone: circle radii encode a curved, continuous tonal field. */
-.blue-hero-band::after,.blue-edition .field::after,.blue-edition .contact::after,.blue-edition .about::after{content:"";position:absolute;z-index:-1;pointer-events:none;inset:0;mask-image:url(studio-halftone.svg);mask-repeat:no-repeat;mask-size:1440px 840px;mask-position:right top}
-.blue-hero-band::after{height:700px;background:#204ccc88;mask-size:1440px 840px}
-.blue-edition .field::after{background:#c7dcffa8;mask-image:url(studio-halftone.svg),linear-gradient(#000 0 160px,transparent 310px);mask-composite:intersect;mask-size:1350px 788px,100% 100%;mask-position:calc(100% + 390px) -130px,0 0}
-.blue-edition .contact::after{background:#84adff9c;mask-size:1300px 758px;mask-position:calc(0% - 500px) 60px}
-.blue-edition .about::after{background:#426cd85c;mask-size:1000px 583px;mask-position:calc(0% - 470px) 70px}
-@media(max-width:900px){.blue-hero-band::after{mask-size:1120px 653px;mask-position:calc(100% + 80px) 0}.blue-edition .field::after{mask-size:1000px 583px,100% 100%;mask-position:calc(100% + 460px) -170px,0 0}}
-@media(max-width:600px){.blue-hero-band::after{top:300px;height:410px;mask-size:790px 461px;mask-position:calc(100% + 65px) 0}.blue-edition .field::after{mask-size:850px 496px,100% 100%;mask-position:calc(100% + 430px) -140px,0 0}.blue-edition .contact::after{mask-image:url(studio-halftone.svg),linear-gradient(transparent 0 230px,#000 330px);mask-composite:intersect;mask-size:900px 525px,100% 100%;mask-position:calc(0% - 390px) 10px,0 0}.blue-edition .about::after{mask-size:800px 467px;mask-position:calc(0% - 400px) 0}}
-@media(forced-colors:active){.blue-hero-band::after,.blue-edition .field::after,.blue-edition .contact::after,.blue-edition .about::after{display:none}}
+/* Halftone occupies its own section transition, never an illustration backdrop. */
+.blue-edition .sector-header::after{content:none}
+.blue-dot-transition{--dot-size:1440px 840px;--dot-position:center -300px;position:relative;height:150px;overflow:hidden;background:var(--blue-paper);pointer-events:none}
+.blue-dot-transition::before{content:"";position:absolute;inset:0;background:#315edba6;mask-image:url(studio-halftone.svg),linear-gradient(transparent,#000 24%,#000 72%,transparent);mask-composite:intersect;mask-repeat:no-repeat;mask-size:var(--dot-size),100% 100%;mask-position:var(--dot-position),0 0}
+.blue-dot-transition--opening{--dot-position:right -300px}
+.blue-dot-transition--field{--dot-position:left -380px}
+.blue-dot-transition--field::before{background:#315edb8c}
+.blue-dot-transition--contact{--dot-position:right -210px}
+@media(max-width:900px){.blue-dot-transition{--dot-size:1120px 653px;--dot-position:right -240px;height:130px}.blue-dot-transition--field{--dot-position:left -300px}.blue-dot-transition--contact{--dot-position:right -170px}}
+@media(max-width:600px){.blue-dot-transition{--dot-size:900px 525px;--dot-position:right -195px;height:110px}.blue-dot-transition--field{--dot-position:calc(50% + 60px) -245px}.blue-dot-transition--contact{--dot-position:right -140px}}
+@media(forced-colors:active){.blue-dot-transition{display:none}}
+/* White is the default canvas; blue is reserved for selected sections. */
+.blue-hero-band{background:#fff}
+.blue-hero-band::before{content:none}
+.blue-edition .hero h1{color:#171c19}
+.blue-edition .about::before{content:none}
+.blue-dot-transition--opening,.blue-dot-transition--contact{background:#fff}
+.blue-dot-transition--contact::before{background:#315edb94}
