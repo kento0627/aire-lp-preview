@@ -55,3 +55,12 @@
 /* Keep the lightest blue away from small white text. */
 .blue-edition .field{background:radial-gradient(ellipse at 100% 12%,#315bd0 0,transparent 52%),linear-gradient(125deg,#143ec5 0%,#2054c8 72%,#2857cc 100%)}
 .blue-edition .about-statement>p,.blue-edition .re-words,.blue-edition .team article p{color:#344d75}
+/* Real halftone: circle radii encode a curved, continuous tonal field. */
+.blue-hero-band::after,.blue-edition .field::after,.blue-edition .contact::after,.blue-edition .about::after{content:"";position:absolute;z-index:-1;pointer-events:none;inset:0;mask-image:url(studio-halftone.svg);mask-repeat:no-repeat;mask-size:1440px 840px;mask-position:right top}
+.blue-hero-band::after{height:700px;background:#204ccc88;mask-size:1440px 840px}
+.blue-edition .field::after{background:#c7dcffa8;mask-image:url(studio-halftone.svg),linear-gradient(#000 0 160px,transparent 310px);mask-composite:intersect;mask-size:1350px 788px,100% 100%;mask-position:calc(100% + 390px) -130px,0 0}
+.blue-edition .contact::after{background:#84adff9c;mask-size:1300px 758px;mask-position:calc(0% - 500px) 60px}
+.blue-edition .about::after{background:#426cd85c;mask-size:1000px 583px;mask-position:calc(0% - 470px) 70px}
+@media(max-width:900px){.blue-hero-band::after{mask-size:1120px 653px;mask-position:calc(100% + 80px) 0}.blue-edition .field::after{mask-size:1000px 583px,100% 100%;mask-position:calc(100% + 460px) -170px,0 0}}
+@media(max-width:600px){.blue-hero-band::after{top:300px;height:410px;mask-size:790px 461px;mask-position:calc(100% + 65px) 0}.blue-edition .field::after{mask-size:850px 496px,100% 100%;mask-position:calc(100% + 430px) -140px,0 0}.blue-edition .contact::after{mask-image:url(studio-halftone.svg),linear-gradient(transparent 0 230px,#000 330px);mask-composite:intersect;mask-size:900px 525px,100% 100%;mask-position:calc(0% - 390px) 10px,0 0}.blue-edition .about::after{mask-size:800px 467px;mask-position:calc(0% - 400px) 0}}
+@media(forced-colors:active){.blue-hero-band::after,.blue-edition .field::after,.blue-edition .contact::after,.blue-edition .about::after{display:none}}
