@@ -55,21 +55,21 @@
 /* Keep the lightest blue away from small white text. */
 .blue-edition .field{background:radial-gradient(ellipse at 100% 12%,#315bd0 0,transparent 52%),linear-gradient(125deg,#143ec5 0%,#2054c8 72%,#2857cc 100%)}
 .blue-edition .about-statement>p,.blue-edition .re-words,.blue-edition .team article p{color:#344d75}
-/* Halftone occupies its own section transition, never an illustration backdrop. */
+/* Dots grow into the exact blue surface of the following section. */
 .blue-edition .sector-header::after{content:none}
-.blue-dot-transition{--dot-size:1440px 840px;--dot-position:center -300px;position:relative;height:150px;overflow:hidden;background:var(--blue-paper);pointer-events:none}
-.blue-dot-transition::before{content:"";position:absolute;inset:0;background:#315edba6;mask-image:url(studio-halftone.svg),linear-gradient(transparent,#000 24%,#000 72%,transparent);mask-composite:intersect;mask-repeat:no-repeat;mask-size:var(--dot-size),100% 100%;mask-position:var(--dot-position),0 0}
-.blue-dot-transition--opening{--dot-position:right -300px}
-.blue-dot-transition--field{--dot-position:left -380px}
-.blue-dot-transition--field::before{background:#315edb8c}
-.blue-dot-transition--contact{--dot-position:right -210px}
-@media(max-width:900px){.blue-dot-transition{--dot-size:1120px 653px;--dot-position:right -240px;height:130px}.blue-dot-transition--field{--dot-position:left -300px}.blue-dot-transition--contact{--dot-position:right -170px}}
-@media(max-width:600px){.blue-dot-transition{--dot-size:900px 525px;--dot-position:right -195px;height:110px}.blue-dot-transition--field{--dot-position:calc(50% + 60px) -245px}.blue-dot-transition--contact{--dot-position:right -140px}}
+.blue-dot-transition{--section-blue:#2456d2;position:relative;height:180px;overflow:hidden;background:#fff;pointer-events:none}
+.blue-dot-transition::before{content:"";position:absolute;inset:0;background:var(--section-blue);mask-image:url(studio-section-halftone.svg);mask-repeat:repeat-x;mask-size:auto 100%;mask-position:center bottom}
+.blue-dot-transition--contact{--section-blue:#173b9e}
+.blue-edition .field{background:linear-gradient(#2456d2 0 110px,#1946bd 100%)}
+.blue-edition .contact{background:linear-gradient(#173b9e 0 110px,#0c235f 100%)}
+.blue-edition .field::before,.blue-edition .contact::before{mask-image:linear-gradient(transparent,#000 120px)}
+@media(max-width:900px){.blue-dot-transition{height:150px}}
+@media(max-width:600px){.blue-dot-transition{height:120px}}
 @media(forced-colors:active){.blue-dot-transition{display:none}}
 /* White is the default canvas; blue is reserved for selected sections. */
 .blue-hero-band{background:#fff}
 .blue-hero-band::before{content:none}
 .blue-edition .hero h1{color:#171c19}
 .blue-edition .about::before{content:none}
-.blue-dot-transition--opening,.blue-dot-transition--contact{background:#fff}
-.blue-dot-transition--contact::before{background:#315edb94}
+/* The transition and section form one surface, without a divider seam. */
+.blue-edition .field{border-top:0}
