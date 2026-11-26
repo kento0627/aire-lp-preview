@@ -1,0 +1,31 @@
+(() => {
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const icon=name=>`<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+const press=(selector,key,attr)=>$$(selector).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset[attr]===key)));
+const flash=el=>{el.classList.remove('play-feedback');requestAnimationFrame(()=>el.classList.add('play-feedback'));setTimeout(()=>el.classList.remove('play-feedback'),550);};
+const workOptions={order:{label:'受注',title:'仕事が、つながっていく。',inputs:[['doc','注文書'],['grid','商品台帳']],outputs:['下書きへ','確認待ちへ'],queue:['受注の下書き','必要な資料','例外の確認'],count:128,flows:24,checks:3},knowledge:{label:'資料',title:'ばらばらの知恵が、ひとつに。',inputs:[['doc','社内資料'],['clock','対応履歴']],outputs:['答えへ','参照元へ'],queue:['関連する資料','答えの候補','参照元の確認'],count:64,flows:12,checks:2},proposal:{label:'提案',title:'アイデアが、かたちになっていく。',inputs:[['doc','商談メモ'],['grid','過去の提案']],outputs:['構成へ','たたき台へ'],queue:['提案の構成','下書きの準備','条件の確認'],count:32,flows:8,checks:1}};
+let mode='order';
+$$('button[data-work]').forEach(b=>b.addEventListener('click',()=>setWork(b.dataset.work)));
+function setWork(id){mode=id;const w=workOptions[id];$('.fx-dashboard').dataset.workMode=id;$('#play-work-title').textContent=w.title;press('button[data-work]',id,'work');$$('.fx-flow-input').forEach((e,i)=>e.innerHTML=icon(w.inputs[i][0])+w.inputs[i][1]);$$('.fx-flow-output').forEach((e,i)=>e.innerHTML=icon('check')+w.outputs[i]);$$('.fx-queue-item b').forEach((e,i)=>e.textContent=w.queue[i]);const nums=$$('.fx-summary>div>b');nums[0].innerHTML=w.count+'<small>件</small>';nums[1].innerHTML=w.flows+'<small>フロー</small>';$('.fx-ring b').textContent=w.checks;$('.fx-flow-board').classList.remove('is-linked');$('#play-work-status').textContent='中央の「つなぐ」で、デモの流れを試せます。';$('#play-connect').setAttribute('aria-label',w.label+'の流れをデモでつなぐ');flash($('.fx-flow-board'));}
+$('#play-connect').addEventListener('click',()=>{$('.fx-flow-board').classList.add('is-linked');$('#play-work-status').textContent=workOptions[mode].label+'の流れがつながりました。実際の連携は行いません。';flash($('.fx-ai-core'));});
+const tasteOptions={season:[['有機トマト','彩りに、旬の一品。','tomato'],['季節の葉野菜','いつもの一皿に。','leaf']],classic:[['いつものトマト','迷ったら、定番。','tomato'],['定番の葉野菜','いつもの安心を。','leaf']],adventure:[['カラフルトマト','ちょっと意外な彩り。','tomato'],['香りのハーブ','ひとさじの冒険。','leaf']]};
+function updateSelection(){const count=$$('.play-product[aria-pressed=true]').length;$('#play-rec-status').textContent=count?count+'つ選択中。商品も押せます。':'選択なし。気になる商品を押してみよう。';}
+function setTaste(id){press('button[data-taste]',id,'taste');$('.fx-recommend').dataset.taste=id;$$('.play-product').forEach((b,i)=>{const data=tasteOptions[id][i];b.querySelector('b').textContent=data[0];b.querySelector(':scope>span:not(.vegetable)').textContent=data[1];b.setAttribute('aria-label',data[0]+'の選択を切り替える');b.setAttribute('aria-pressed','true');});updateSelection();flash($('.fx-rec-results'));}
+$$('button[data-taste]').forEach(b=>b.addEventListener('click',()=>setTaste(b.dataset.taste)));
+$$('.play-product').forEach(b=>b.addEventListener('click',()=>{b.setAttribute('aria-pressed',String(b.getAttribute('aria-pressed')!=='true'));updateSelection();}));
+const questions={sales:{q:'新規取引の提案に必要な資料は？',a:'まずは、この3点から。',sources:['営業ガイド','商品台帳','過去の提案']},onboard:{q:'入社したら、何を確認する？',a:'新しい一歩を、この3点で。',sources:['入社ガイド','チーム紹介','仕事の手順']},rules:{q:'社内のルールは、どこにある？',a:'迷ったときの、よりどころ。',sources:['社内規程','申請の手順','よくある質問']}};
+function setQuestion(id){press('button[data-question]',id,'question');const q=questions[id];$('.fx-answer-card b').textContent=q.q;$('.fx-concrete-answer').textContent=q.a;$$('.fx-source-pills span').forEach((e,i)=>e.textContent=q.sources[i]);$('.fx-knowledge').classList.add('has-answer');flash($('.fx-answer-card'));}
+$$('button[data-question]').forEach(b=>b.addEventListener('click',()=>setQuestion(b.dataset.question)));
+function setDeck(id){press('button[data-deck]',id,'deck');$('.fx-proposal').dataset.deck=id;$('.fx-slide-title').innerHTML=id==='story'?'ある面倒が、<br>ひらめきに。':'アイデアが、<br>提案になる。';const blocks=id==='story'?[['はじまり','発注先が分散'],['ひらめき','まとめて発注'],['つぎの一歩','条件を確認']]:[['背景','発注先が分散'],['提案','まとめて発注'],['次の一手','条件を確認']];$$('.fx-build-blocks>div').forEach((e,i)=>{e.querySelector('b').textContent=blocks[i][0];e.querySelector('small').textContent=blocks[i][1];});flash($('.slide-front'));}
+$$('button[data-deck]').forEach(b=>b.addEventListener('click',()=>setDeck(b.dataset.deck)));
+const paletteNames={forest:'森の色',ocean:'海の色',plum:'すももの色'};
+function setPalette(id){press('button[data-palette]',id,'palette');$('.fx-identity').dataset.palette=id;$('#play-palette-label').textContent=paletteNames[id]+'。ロゴもWebも、同じ空気に。';flash($('.fx-logo-art'));}
+$$('button[data-palette]').forEach(b=>b.addEventListener('click',()=>setPalette(b.dataset.palette)));
+let step=0;const shipping=[['ここから、いっしょにつくる。','あなたのサービスとして。','設計から、動く仕組みへ。'],['要件を、いっしょに整理。','つくるものが、見えてきた。','課題と、実装の範囲を合わせる。'],['AIReが、手を動かす。','アイデアが、動き始める。','小さくつくって、試してみる。'],['実際の使い方で、確かめる。','ちゃんと使える、をつくる。','例外も、確認の流れも。'],['デモ上の納品まで到着。送信はしていません。','あなたのサービスとして。','仕組みも、使い方も、お渡し。']];
+function renderShipping(){const data=shipping[step];$('.play-pipeline').dataset.step=step;$$('.play-pipeline>div').forEach((e,i)=>{e.classList.toggle('is-current',step>0&&i===step-1);e.classList.toggle('is-done',i<step-1);});$('#play-shipping-status').textContent=data[0];$('.fx-delivery-result>div>b').textContent=data[1];$('.fx-delivery-result>div>span').textContent=data[2];$('#play-next-step').textContent=step===4?'もう一度、最初から':'次の工程を試す';}
+$('#play-next-step').addEventListener('click',()=>{step=(step+1)%5;renderShipping();flash($('.fx-delivery-result'));});
+const quips=['つくるのって、<br>たのしい。','その面倒、<br>腕が鳴ります。','いい仕事は、<br>試すところから。'];let quip=0;
+$('#play-wink').addEventListener('click',()=>{quip=(quip+1)%quips.length;$('#play-wink-text').innerHTML=quips[quip];$('#play-wink').classList.add('is-winking');setTimeout(()=>$('#play-wink').classList.remove('is-winking'),700);});
+$('#play-reset').addEventListener('click',()=>{setWork('order');setTaste('season');setQuestion('sales');setDeck('clear');setPalette('forest');step=0;renderShipping();quip=0;$('#play-wink-text').innerHTML=quips[0];$('#play-reset').textContent='最初の状態に戻しました';setTimeout(()=>$('#play-reset').textContent='遊びを最初から',1800);});
+})();
